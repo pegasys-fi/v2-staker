@@ -17,8 +17,8 @@ import _ from 'lodash'
 import {
   TestERC20,
   INonfungiblePositionManager,
-  UniswapV3Staker,
-  IUniswapV3Pool,
+  PegasysV2Staker,
+  IPegasysV2Pool,
   TestIncentiveId,
 } from '../../typechain'
 import { HelperTypes } from './types'
@@ -38,10 +38,10 @@ import { TestContext } from '../types'
 export class HelperCommands {
   actors: ActorFixture
   provider: MockProvider
-  staker: UniswapV3Staker
+  staker: PegasysV2Staker
   nft: INonfungiblePositionManager
   router: ISwapRouter
-  pool: IUniswapV3Pool
+  pool: IPegasysV2Pool
   testIncentiveId: TestIncentiveId
 
   DEFAULT_INCENTIVE_DURATION = 2_000
@@ -59,10 +59,10 @@ export class HelperCommands {
     testIncentiveId,
   }: {
     provider: MockProvider
-    staker: UniswapV3Staker
+    staker: PegasysV2Staker
     nft: INonfungiblePositionManager
     router: ISwapRouter
-    pool: IUniswapV3Pool
+    pool: IPegasysV2Pool
     actors: ActorFixture
     testIncentiveId: TestIncentiveId
   }) {
@@ -175,7 +175,7 @@ export class HelperCommands {
     await this.nft.connect(params.lp).approve(this.staker.address, tokenId)
     await this.nft
       .connect(params.lp)
-      ['safeTransferFrom(address,address,uint256)'](params.lp.address, this.staker.address, tokenId)
+    ['safeTransferFrom(address,address,uint256)'](params.lp.address, this.staker.address, tokenId)
     await this.staker
       .connect(params.lp)
       .stakeToken(incentiveResultToStakeAdapter(params.createIncentiveResult), tokenId)
@@ -194,7 +194,7 @@ export class HelperCommands {
 
     await this.nft
       .connect(params.lp)
-      ['safeTransferFrom(address,address,uint256)'](params.lp.address, this.staker.address, params.tokenId)
+    ['safeTransferFrom(address,address,uint256)'](params.lp.address, this.staker.address, params.tokenId)
   }
 
   mintFlow: HelperTypes.Mint.Command = async (params) => {

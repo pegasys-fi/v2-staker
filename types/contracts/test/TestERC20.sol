@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-// PEGASYS-v2-core/contracts/test/TestERC20.sol
+// pegasys-v2-core/contracts/test/TestERC20.sol
 pragma solidity =0.7.6;
 
 import '@pollum-io/v2-core/contracts/interfaces/IERC20Minimal.sol';

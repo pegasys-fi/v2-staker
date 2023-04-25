@@ -1,7 +1,7 @@
 import { BigNumber, Wallet } from 'ethers'
 import { LoadFixtureFunction } from '../types'
 import { TestERC20 } from '../../typechain'
-import { uniswapFixture, mintPosition, UniswapFixtureType } from '../shared/fixtures'
+import { pegasysFixture, mintPosition, PegasysFixtureType } from '../shared/fixtures'
 import {
   expect,
   getMaxTick,
@@ -34,7 +34,7 @@ describe('unit/Stakes', () => {
   const erc20Helper = new ERC20Helper()
   const Time = createTimeMachine(provider)
   let helpers: HelperCommands
-  let context: UniswapFixtureType
+  let context: PegasysFixtureType
   let timestamps: ContractParams.Timestamps
   let tokenId: string
 
@@ -43,7 +43,7 @@ describe('unit/Stakes', () => {
   })
 
   beforeEach('create fixture loader', async () => {
-    context = await loadFixture(uniswapFixture)
+    context = await loadFixture(pegasysFixture)
     helpers = HelperCommands.fromTestContext(context, actors, provider)
   })
 
@@ -53,7 +53,7 @@ describe('unit/Stakes', () => {
     let subject: (_tokenId: string, _actor: Wallet) => Promise<any>
 
     beforeEach(async () => {
-      context = await loadFixture(uniswapFixture)
+      context = await loadFixture(pegasysFixture)
       helpers = HelperCommands.fromTestContext(context, actors, provider)
 
       /* We will be doing a lot of time-testing here, so leave some room between
@@ -83,7 +83,7 @@ describe('unit/Stakes', () => {
 
       await context.nft
         .connect(lpUser0)
-        ['safeTransferFrom(address,address,uint256)'](lpUser0.address, context.staker.address, tokenId)
+      ['safeTransferFrom(address,address,uint256)'](lpUser0.address, context.staker.address, tokenId)
 
       incentiveArgs = {
         rewardToken: context.rewardToken,
@@ -159,14 +159,14 @@ describe('unit/Stakes', () => {
       it('deposit is already staked in the incentive', async () => {
         await Time.set(timestamps.startTime + 500)
         await subject(tokenId, lpUser0)
-        await expect(subject(tokenId, lpUser0)).to.be.revertedWith('UniswapV3Staker::stakeToken: token already staked')
+        await expect(subject(tokenId, lpUser0)).to.be.revertedWith('PegasysV2Staker::stakeToken: token already staked')
       })
 
       it('you are not the owner of the deposit', async () => {
         await Time.set(timestamps.startTime + 500)
         // lpUser2 calls, we're using lpUser0 elsewhere.
         await expect(subject(tokenId, actors.lpUser2())).to.be.revertedWith(
-          'UniswapV3Staker::stakeToken: only owner can stake token'
+          'PegasysV2Staker::stakeToken: only owner can stake token'
         )
       })
 
@@ -203,12 +203,12 @@ describe('unit/Stakes', () => {
 
         await context.nft
           .connect(lpUser0)
-          ['safeTransferFrom(address,address,uint256)'](lpUser0.address, context.staker.address, tokenId2, {
-            ...maxGas,
-          })
+        ['safeTransferFrom(address,address,uint256)'](lpUser0.address, context.staker.address, tokenId2, {
+          ...maxGas,
+        })
 
         await expect(subject(tokenId2, lpUser0)).to.be.revertedWith(
-          'UniswapV3Staker::stakeToken: cannot stake token with 0 liquidity'
+          'PegasysV2Staker::stakeToken: cannot stake token with 0 liquidity'
         )
       })
 
@@ -239,7 +239,7 @@ describe('unit/Stakes', () => {
             },
             otherTokenId
           )
-        ).to.be.revertedWith('UniswapV3Staker::stakeToken: token pool is not the incentive pool')
+        ).to.be.revertedWith('PegasysV2Staker::stakeToken: token pool is not the incentive pool')
       })
 
       it('incentive key does not exist', async () => {
@@ -256,12 +256,12 @@ describe('unit/Stakes', () => {
             },
             tokenId
           )
-        ).to.be.revertedWith('UniswapV3Staker::stakeToken: non-existent incentive')
+        ).to.be.revertedWith('PegasysV2Staker::stakeToken: non-existent incentive')
       })
 
       it('is past the end time', async () => {
         await Time.set(timestamps.endTime + 100)
-        await expect(subject(tokenId, lpUser0)).to.be.revertedWith('UniswapV3Staker::stakeToken: incentive ended')
+        await expect(subject(tokenId, lpUser0)).to.be.revertedWith('PegasysV2Staker::stakeToken: incentive ended')
       })
 
       it('is before the start time', async () => {
@@ -269,7 +269,7 @@ describe('unit/Stakes', () => {
           throw new Error('no good')
         }
         await Time.set(timestamps.startTime - 2)
-        await expect(subject(tokenId, lpUser0)).to.be.revertedWith('UniswapV3Staker::stakeToken: incentive not started')
+        await expect(subject(tokenId, lpUser0)).to.be.revertedWith('PegasysV2Staker::stakeToken: incentive not started')
       })
     })
   })
@@ -289,7 +289,7 @@ describe('unit/Stakes', () => {
 
       await context.nft
         .connect(lpUser0)
-        ['safeTransferFrom(address,address,uint256)'](lpUser0.address, context.staker.address, tokenId)
+      ['safeTransferFrom(address,address,uint256)'](lpUser0.address, context.staker.address, tokenId)
 
       stakeIncentiveKey = {
         refundee: incentiveCreator.address,
@@ -345,7 +345,7 @@ describe('unit/Stakes', () => {
       await Time.setAndMine(timestamps.endTime + 1)
 
       await expect(context.staker.connect(lpUser0).getRewardInfo(stakeIncentiveKey, '100')).to.be.revertedWith(
-        'UniswapV3Staker::getRewardInfo: stake does not exist'
+        'PegasysV2Staker::getRewardInfo: stake does not exist'
       )
     })
   })
@@ -512,7 +512,7 @@ describe('unit/Stakes', () => {
 
       await context.nft
         .connect(lpUser0)
-        ['safeTransferFrom(address,address,uint256)'](lpUser0.address, context.staker.address, tokenId)
+      ['safeTransferFrom(address,address,uint256)'](lpUser0.address, context.staker.address, tokenId)
 
       await Time.setAndMine(timestamps.startTime + 1)
 
@@ -603,19 +603,19 @@ describe('unit/Stakes', () => {
       it('stake has already been unstaked', async () => {
         await Time.setAndMine(timestamps.endTime + 1)
         await subject(lpUser0)
-        await expect(subject(lpUser0)).to.revertedWith('UniswapV3Staker::unstakeToken: stake does not exist')
+        await expect(subject(lpUser0)).to.revertedWith('PegasysV2Staker::unstakeToken: stake does not exist')
       })
 
       it('you have not staked', async () => {
         await expect(subject(actors.lpUser2())).to.revertedWith(
-          'UniswapV3Staker::unstakeToken: only owner can withdraw token'
+          'PegasysV2Staker::unstakeToken: only owner can withdraw token'
         )
       })
 
       it('non-owner tries to unstake before the end time', async () => {
         const nonOwner = actors.lpUser2()
         await Time.setAndMine(timestamps.startTime + 100)
-        await expect(subject(nonOwner)).to.revertedWith('UniswapV3Staker::unstakeToken: only owner can withdraw token')
+        await expect(subject(nonOwner)).to.revertedWith('PegasysV2Staker::unstakeToken: only owner can withdraw token')
         expect(await blockTimestamp(), 'test setup: after end time').to.be.lt(timestamps.endTime)
       })
     })

@@ -1,6 +1,6 @@
-import { FeeAmount } from './external/v3-periphery/constants'
-import { getMinTick, getMaxTick } from './external/v3-periphery/ticks'
-import { TICK_SPACINGS } from './external/v3-periphery/constants'
+import { FeeAmount } from './external/v2-periphery/constants'
+import { getMinTick, getMaxTick } from './external/v2-periphery/ticks'
+import { TICK_SPACINGS } from './external/v2-periphery/constants'
 
 export const defaultTicks = (fee: FeeAmount = FeeAmount.MEDIUM) => ({
   tickLower: getMinTick(TICK_SPACINGS[fee]),

@@ -14,7 +14,7 @@ interface ISwapRouterInterface extends ethers.utils.Interface {
     'exactInputSingle(tuple)': FunctionFragment
     'exactOutput(tuple)': FunctionFragment
     'exactOutputSingle(tuple)': FunctionFragment
-    'uniswapV3SwapCallback(int256,int256,bytes)': FunctionFragment
+    'pegasysV2SwapCallback(int256,int256,bytes)': FunctionFragment
   }
 
   encodeFunctionData(
@@ -71,13 +71,13 @@ interface ISwapRouterInterface extends ethers.utils.Interface {
       }
     ]
   ): string
-  encodeFunctionData(functionFragment: 'uniswapV3SwapCallback', values: [BigNumberish, BigNumberish, BytesLike]): string
+  encodeFunctionData(functionFragment: 'pegasysV2SwapCallback', values: [BigNumberish, BigNumberish, BytesLike]): string
 
   decodeFunctionResult(functionFragment: 'exactInput', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'exactInputSingle', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'exactOutput', data: BytesLike): Result
   decodeFunctionResult(functionFragment: 'exactOutputSingle', data: BytesLike): Result
-  decodeFunctionResult(functionFragment: 'uniswapV3SwapCallback', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'pegasysV2SwapCallback', data: BytesLike): Result
 
   events: {}
 }
@@ -196,14 +196,14 @@ export class ISwapRouter extends Contract {
       overrides?: PayableOverrides
     ): Promise<ContractTransaction>
 
-    uniswapV3SwapCallback(
+    pegasysV2SwapCallback(
       amount0Delta: BigNumberish,
       amount1Delta: BigNumberish,
       data: BytesLike,
       overrides?: Overrides
     ): Promise<ContractTransaction>
 
-    'uniswapV3SwapCallback(int256,int256,bytes)'(
+    'pegasysV2SwapCallback(int256,int256,bytes)'(
       amount0Delta: BigNumberish,
       amount1Delta: BigNumberish,
       data: BytesLike,
@@ -311,14 +311,14 @@ export class ISwapRouter extends Contract {
     overrides?: PayableOverrides
   ): Promise<ContractTransaction>
 
-  uniswapV3SwapCallback(
+  pegasysV2SwapCallback(
     amount0Delta: BigNumberish,
     amount1Delta: BigNumberish,
     data: BytesLike,
     overrides?: Overrides
   ): Promise<ContractTransaction>
 
-  'uniswapV3SwapCallback(int256,int256,bytes)'(
+  'pegasysV2SwapCallback(int256,int256,bytes)'(
     amount0Delta: BigNumberish,
     amount1Delta: BigNumberish,
     data: BytesLike,
@@ -426,14 +426,14 @@ export class ISwapRouter extends Contract {
       overrides?: CallOverrides
     ): Promise<BigNumber>
 
-    uniswapV3SwapCallback(
+    pegasysV2SwapCallback(
       amount0Delta: BigNumberish,
       amount1Delta: BigNumberish,
       data: BytesLike,
       overrides?: CallOverrides
     ): Promise<void>
 
-    'uniswapV3SwapCallback(int256,int256,bytes)'(
+    'pegasysV2SwapCallback(int256,int256,bytes)'(
       amount0Delta: BigNumberish,
       amount1Delta: BigNumberish,
       data: BytesLike,
@@ -544,14 +544,14 @@ export class ISwapRouter extends Contract {
       overrides?: PayableOverrides
     ): Promise<BigNumber>
 
-    uniswapV3SwapCallback(
+    pegasysV2SwapCallback(
       amount0Delta: BigNumberish,
       amount1Delta: BigNumberish,
       data: BytesLike,
       overrides?: Overrides
     ): Promise<BigNumber>
 
-    'uniswapV3SwapCallback(int256,int256,bytes)'(
+    'pegasysV2SwapCallback(int256,int256,bytes)'(
       amount0Delta: BigNumberish,
       amount1Delta: BigNumberish,
       data: BytesLike,
@@ -660,14 +660,14 @@ export class ISwapRouter extends Contract {
       overrides?: PayableOverrides
     ): Promise<PopulatedTransaction>
 
-    uniswapV3SwapCallback(
+    pegasysV2SwapCallback(
       amount0Delta: BigNumberish,
       amount1Delta: BigNumberish,
       data: BytesLike,
       overrides?: Overrides
     ): Promise<PopulatedTransaction>
 
-    'uniswapV3SwapCallback(int256,int256,bytes)'(
+    'pegasysV2SwapCallback(int256,int256,bytes)'(
       amount0Delta: BigNumberish,
       amount1Delta: BigNumberish,
       data: BytesLike,

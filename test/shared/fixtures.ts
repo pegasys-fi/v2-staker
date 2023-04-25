@@ -2,22 +2,22 @@ import { Fixture } from 'ethereum-waffle'
 import { constants } from 'ethers'
 import { ethers, waffle } from 'hardhat'
 
-import UniswapV3Pool from '@uniswap/v3-core/artifacts/contracts/UniswapV3Pool.sol/UniswapV3Pool.json'
-import UniswapV3FactoryJson from '@uniswap/v3-core/artifacts/contracts/UniswapV3Factory.sol/UniswapV3Factory.json'
-import NFTDescriptorJson from '@uniswap/v3-periphery/artifacts/contracts/libraries/NFTDescriptor.sol/NFTDescriptor.json'
-import NonfungiblePositionManagerJson from '@uniswap/v3-periphery/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json'
-import NonfungibleTokenPositionDescriptor from '@uniswap/v3-periphery/artifacts/contracts/NonfungibleTokenPositionDescriptor.sol/NonfungibleTokenPositionDescriptor.json'
-import SwapRouter from '@uniswap/v3-periphery/artifacts/contracts/SwapRouter.sol/SwapRouter.json'
+import PegasysV2Pool from '@pollum-io/v2-core/artifacts/contracts/PegasysV2Pool.sol/PegasysV2Pool.json'
+import PegasysV2FactoryJson from '@pollum-io/v2-core/artifacts/contracts/PegasysV2Factory.sol/PegasysV2Factory.json'
+import NFTDescriptorJson from '@pollum-io/v2-periphery/artifacts/contracts/libraries/NFTDescriptor.sol/NFTDescriptor.json'
+import NonfungiblePositionManagerJson from '@pollum-io/v2-periphery/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json'
+import NonfungibleTokenPositionDescriptor from '@pollum-io/v2-periphery/artifacts/contracts/NonfungibleTokenPositionDescriptor.sol/NonfungibleTokenPositionDescriptor.json'
+import SwapRouter from '@pollum-io/v2-periphery/artifacts/contracts/SwapRouter.sol/SwapRouter.json'
 import WETH9 from './external/WETH9.json'
 import { linkLibraries } from './linkLibraries'
 import { ISwapRouter } from '../../types/ISwapRouter'
 import { IWETH9 } from '../../types/IWETH9'
 import {
-  UniswapV3Staker,
+  PegasysV2Staker,
   TestERC20,
   INonfungiblePositionManager,
-  IUniswapV3Factory,
-  IUniswapV3Pool,
+  IPegasysV2Factory,
+  IPegasysV2Pool,
   TestIncentiveId,
 } from '../../typechain'
 import { NFTDescriptor } from '../../types/NFTDescriptor'
@@ -35,20 +35,20 @@ export const wethFixture: Fixture<WETH9Fixture> = async ([wallet]) => {
   return { weth9 }
 }
 
-const v3CoreFactoryFixture: Fixture<IUniswapV3Factory> = async ([wallet]) => {
+const v2CoreFactoryFixture: Fixture<IPegasysV2Factory> = async ([wallet]) => {
   return ((await waffle.deployContract(wallet, {
-    bytecode: UniswapV3FactoryJson.bytecode,
-    abi: UniswapV3FactoryJson.abi,
-  })) as unknown) as IUniswapV3Factory
+    bytecode: PegasysV2FactoryJson.bytecode,
+    abi: PegasysV2FactoryJson.abi,
+  })) as unknown) as IPegasysV2Factory
 }
 
-export const v3RouterFixture: Fixture<{
+export const v2RouterFixture: Fixture<{
   weth9: IWETH9
-  factory: IUniswapV3Factory
+  factory: IPegasysV2Factory
   router: ISwapRouter
 }> = async ([wallet], provider) => {
   const { weth9 } = await wethFixture([wallet], provider)
-  const factory = await v3CoreFactoryFixture([wallet], provider)
+  const factory = await v2CoreFactoryFixture([wallet], provider)
   const router = ((await waffle.deployContract(
     wallet,
     {
@@ -68,16 +68,16 @@ const nftDescriptorLibraryFixture: Fixture<NFTDescriptor> = async ([wallet]) => 
   })) as NFTDescriptor
 }
 
-type UniswapFactoryFixture = {
+type PegasysFactoryFixture = {
   weth9: IWETH9
-  factory: IUniswapV3Factory
+  factory: IPegasysV2Factory
   router: ISwapRouter
   nft: INonfungiblePositionManager
   tokens: [TestERC20, TestERC20, TestERC20]
 }
 
-export const uniswapFactoryFixture: Fixture<UniswapFactoryFixture> = async (wallets, provider) => {
-  const { weth9, factory, router } = await v3RouterFixture(wallets, provider)
+export const pegasysFactoryFixture: Fixture<PegasysFactoryFixture> = async (wallets, provider) => {
+  const { weth9, factory, router } = await v2RouterFixture(wallets, provider)
   const tokenFactory = await ethers.getContractFactory('TestERC20')
   const tokens = (await Promise.all([
     tokenFactory.deploy(constants.MaxUint256.div(2)), // do not use maxu256 to avoid overflowing
@@ -95,7 +95,7 @@ export const uniswapFactoryFixture: Fixture<UniswapFactoryFixture> = async (wall
           NFTDescriptor: [
             {
               length: 20,
-              start: 1261,
+              start: 1681,
             },
           ],
         },
@@ -198,26 +198,26 @@ export const mintPosition = async (
   }
 }
 
-export type UniswapFixtureType = {
-  factory: IUniswapV3Factory
+export type PegasysFixtureType = {
+  factory: IPegasysV2Factory
   fee: FeeAmount
   nft: INonfungiblePositionManager
   pool01: string
   pool12: string
-  poolObj: IUniswapV3Pool
+  poolObj: IPegasysV2Pool
   router: ISwapRouter
-  staker: UniswapV3Staker
+  staker: PegasysV2Staker
   testIncentiveId: TestIncentiveId
   tokens: [TestERC20, TestERC20, TestERC20]
   token0: TestERC20
   token1: TestERC20
   rewardToken: TestERC20
 }
-export const uniswapFixture: Fixture<UniswapFixtureType> = async (wallets, provider) => {
-  const { tokens, nft, factory, router } = await uniswapFactoryFixture(wallets, provider)
+export const pegasysFixture: Fixture<PegasysFixtureType> = async (wallets, provider) => {
+  const { tokens, nft, factory, router } = await pegasysFactoryFixture(wallets, provider)
   const signer = new ActorFixture(wallets, provider).stakerDeployer()
-  const stakerFactory = await ethers.getContractFactory('UniswapV3Staker', signer)
-  const staker = (await stakerFactory.deploy(factory.address, nft.address, 2 ** 32, 2 ** 32)) as UniswapV3Staker
+  const stakerFactory = await ethers.getContractFactory('PegasysV2Staker', signer)
+  const staker = (await stakerFactory.deploy(factory.address, nft.address, 2 ** 32, 2 ** 32)) as PegasysV2Staker
 
   const testIncentiveIdFactory = await ethers.getContractFactory('TestIncentiveId', signer)
   const testIncentiveId = (await testIncentiveIdFactory.deploy()) as TestIncentiveId
@@ -235,7 +235,7 @@ export const uniswapFixture: Fixture<UniswapFixtureType> = async (wallets, provi
 
   const pool12 = await factory.getPool(tokens[1].address, tokens[2].address, fee)
 
-  const poolObj = poolFactory.attach(pool01) as IUniswapV3Pool
+  const poolObj = poolFactory.attach(pool01) as IPegasysV2Pool
 
   return {
     nft,
@@ -254,4 +254,4 @@ export const uniswapFixture: Fixture<UniswapFixtureType> = async (wallets, provi
   }
 }
 
-export const poolFactory = new ethers.ContractFactory(UniswapV3Pool.abi, UniswapV3Pool.bytecode)
+export const poolFactory = new ethers.ContractFactory(PegasysV2Pool.abi, PegasysV2Pool.bytecode)

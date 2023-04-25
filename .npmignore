@@ -1,0 +1,17 @@
+scripts/
+test/
+cache/
+node_modules/
+.env
+.env.example
+.github/
+hardhat.config.ts
+tsconfig.json
+typechain/
+.prettierrc
+.prettierignore
+.solhint.json
+.mocharc.json
+audits/
+.yarnrc
+yarn.lock

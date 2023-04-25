@@ -11,7 +11,7 @@ import {
   getMaxTick,
   getMinTick,
   TICK_SPACINGS,
-  uniswapFixture,
+  pegasysFixture,
   log,
   days,
   ratioE18,
@@ -58,7 +58,7 @@ describe('integration', async () => {
     const amountsToStake: [BigNumber, BigNumber] = [BNe18(1_000), BNe18(1_000)]
 
     const scenario: Fixture<TestSubject> = async (_wallets, _provider) => {
-      const context = await uniswapFixture(_wallets, _provider)
+      const context = await pegasysFixture(_wallets, _provider)
       const epoch = await blockTimestamp()
 
       const {
@@ -191,7 +191,7 @@ describe('integration', async () => {
           expect(await nft.ownerOf(stakes[0].tokenId)).to.eq(stakes[0].lp.address)
         })
 
-        it('does not allow the LP to claim rewards', async () => {})
+        it('does not allow the LP to claim rewards', async () => { })
       })
     })
 
@@ -222,7 +222,7 @@ describe('integration', async () => {
          *
          * So that's (1/3)*(1/2)*3000e18 = ~50e18
          */
-        // Uniswap/uniswap-v3-staker#144
+        // Pegasys/pegasys-v2-staker#144
         expect(unstakes[0].balance).to.beWithin(BNe(1, 15), BN('499989197530864021534'))
 
         // Now the other two LPs hold off till the end and unstake
@@ -306,7 +306,7 @@ describe('integration', async () => {
             createIncentiveResult,
           })
 
-          // Uniswap/uniswap-v3-staker#144
+          // Pegasys/pegasys-v2-staker#144
           expect(lpUser0Balance).to.beWithin(BNe(1, 12), BN('749985223767771705507'))
         })
       })
@@ -448,7 +448,7 @@ describe('integration', async () => {
     const baseAmount = BNe18(2)
 
     const scenario: Fixture<TestSubject> = async (_wallets, _provider) => {
-      const context = await uniswapFixture(_wallets, _provider)
+      const context = await pegasysFixture(_wallets, _provider)
 
       const helpers = HelperCommands.fromTestContext(context, new ActorFixture(_wallets, _provider), _provider)
 

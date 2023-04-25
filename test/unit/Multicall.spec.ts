@@ -1,5 +1,5 @@
 import { LoadFixtureFunction } from '../types'
-import { uniswapFixture, mintPosition, UniswapFixtureType } from '../shared/fixtures'
+import { pegasysFixture, mintPosition, PegasysFixtureType } from '../shared/fixtures'
 import {
   getMaxTick,
   getMinTick,
@@ -31,7 +31,7 @@ describe('unit/Multicall', () => {
   const erc20Helper = new ERC20Helper()
   const Time = createTimeMachine(provider)
   let helpers: HelperCommands
-  let context: UniswapFixtureType
+  let context: PegasysFixtureType
   const multicaller = actors.traderUser2()
 
   before('loader', async () => {
@@ -39,7 +39,7 @@ describe('unit/Multicall', () => {
   })
 
   beforeEach('create fixture loader', async () => {
-    context = await loadFixture(uniswapFixture)
+    context = await loadFixture(pegasysFixture)
     helpers = HelperCommands.fromTestContext(context, actors, provider)
   })
 

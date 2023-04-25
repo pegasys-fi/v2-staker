@@ -1,4 +1,4 @@
-# Uniswap V3 Staker
+# Pegasys V2 Staker
 
 There is a canonical position staking contract, Staker.
 
@@ -25,7 +25,7 @@ struct Stake {
 State:
 
 ```solidity
-IUniswapV3Factory public immutable factory;
+IPegasysV2Factory public immutable factory;
 INonfungiblePositionManager public immutable nonfungiblePositionManager;
 
 /// @dev bytes32 refers to the return value of IncentiveId.compute
@@ -113,7 +113,7 @@ struct EndIncentiveParams {
 
 **Check:**
 
-- Make sure sender is univ3 nft
+- Make sure sender is psysv2 nft
 
 **Effects:**
 
@@ -176,7 +176,7 @@ To unstake an NFT, you call `unstakeToken`, which takes all the same arguments a
 ### `getRewardInfo`
 
 - It computes `secondsInsideX128` (the total liquidity seconds for which rewards are owed) for a given Stake, by:
-  - using`snapshotCumulativesInside` from the Uniswap v3 core contract to get `secondsPerLiquidityInRangeX128`, and subtracting `secondsPerLiquidityInRangeInitialX128`.
+  - using`snapshotCumulativesInside` from the Pegasys V2 core contract to get `secondsPerLiquidityInRangeX128`, and subtracting `secondsPerLiquidityInRangeInitialX128`.
   - Multiplying that by `stake.liquidity` to get the total seconds accrued by the liquidity in that period
 - Note that X128 means it's a `UQ32X128`.
 

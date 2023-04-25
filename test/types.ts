@@ -1,10 +1,10 @@
 /// <reference path="./matchers/beWithin.ts"/>
 
 import { createFixtureLoader } from './shared/provider'
-import { UniswapFixtureType } from './shared/fixtures'
+import { PegasysFixtureType } from './shared/fixtures'
 
 export type LoadFixtureFunction = ReturnType<typeof createFixtureLoader>
 
-export type TestContext = UniswapFixtureType & {
+export type TestContext = PegasysFixtureType & {
   subject?: Function
 }
