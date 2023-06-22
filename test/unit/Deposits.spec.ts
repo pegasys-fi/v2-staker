@@ -318,10 +318,10 @@ describe('unit/Deposits', () => {
     })
 
     describe('on invalid call', async () => {
-      it('reverts when called by contract other than Pegasys V2 nonfungiblePositionManager', async () => {
+      it('reverts when called by contract other than Pegasys V3 nonfungiblePositionManager', async () => {
         await expect(
           context.staker.connect(lpUser0).onERC721Received(incentiveCreator.address, lpUser0.address, 1, data)
-        ).to.be.revertedWith('PegasysV2Staker::onERC721Received: not a psysv2 nft')
+        ).to.be.revertedWith('PegasysV3Staker::onERC721Received: not a psysv3 nft')
       })
 
       it('reverts when staking on invalid incentive', async () => {
@@ -344,7 +344,7 @@ describe('unit/Deposits', () => {
             tokenId,
             invalidData
           )
-        ).to.be.revertedWith('PegasysV2Staker::stakeToken: non-existent incentive')
+        ).to.be.revertedWith('PegasysV3Staker::stakeToken: non-existent incentive')
       })
     })
   })
@@ -388,7 +388,7 @@ describe('unit/Deposits', () => {
       it('you are withdrawing a token that is not yours', async () => {
         const notOwner = actors.traderUser1()
         await expect(context.staker.connect(notOwner).withdrawToken(tokenId, notOwner.address, '0x')).to.revertedWith(
-          'PegasysV2Staker::withdrawToken: only owner can withdraw token'
+          'PegasysV3Staker::withdrawToken: only owner can withdraw token'
         )
       })
 
@@ -412,7 +412,7 @@ describe('unit/Deposits', () => {
         )
 
         await expect(subject(tokenId, lpUser0.address)).to.revertedWith(
-          'PegasysV2Staker::withdrawToken: cannot withdraw token while staked'
+          'PegasysV3Staker::withdrawToken: cannot withdraw token while staked'
         )
       })
     })
@@ -441,13 +441,13 @@ describe('unit/Deposits', () => {
 
     it('can only be called by the owner', async () => {
       await expect(context.staker.connect(lpUser1).transferDeposit(tokenId, lpUser1.address)).to.be.revertedWith(
-        'PegasysV2Staker::transferDeposit: can only be called by deposit owner'
+        'PegasysV3Staker::transferDeposit: can only be called by deposit owner'
       )
     })
 
     it('cannot be transferred to address 0', async () => {
       await expect(context.staker.connect(lpUser0).transferDeposit(tokenId, constants.AddressZero)).to.be.revertedWith(
-        'PegasysV2Staker::transferDeposit: invalid transfer recipient'
+        'PegasysV3Staker::transferDeposit: invalid transfer recipient'
       )
     })
 

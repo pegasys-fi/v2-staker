@@ -3,4 +3,4 @@ dist
 coverage
 contracts
 typechain
-test/shared/external/v2-periphery/
+test/shared/external/v3-periphery/

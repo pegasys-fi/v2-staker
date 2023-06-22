@@ -2,7 +2,7 @@
 pragma solidity =0.7.6;
 pragma abicoder v2;
 
-import '../interfaces/IPegasysV2Staker.sol';
+import '../interfaces/IPegasysV3Staker.sol';
 
 import '../libraries/RewardMath.sol';
 

@@ -1,6 +1,6 @@
 import { LoadFixtureFunction } from '../types'
 import { ethers } from 'hardhat'
-import { PegasysV2Staker } from '../../typechain'
+import { PegasysV3Staker } from '../../typechain'
 import { pegasysFixture, PegasysFixtureType } from '../shared/fixtures'
 import { expect } from '../shared'
 import { createFixtureLoader, provider } from '../shared/provider'
@@ -22,24 +22,24 @@ describe('unit/Deployment', () => {
   })
 
   it('deploys and has an address', async () => {
-    const stakerFactory = await ethers.getContractFactory('PegasysV2Staker')
+    const stakerFactory = await ethers.getContractFactory('PegasysV3Staker')
     const staker = (await stakerFactory.deploy(
       context.factory.address,
       context.nft.address,
       2 ** 32,
       2 ** 32
-    )) as PegasysV2Staker
+    )) as PegasysV3Staker
     expect(staker.address).to.be.a.string
   })
 
   it('sets immutable variables', async () => {
-    const stakerFactory = await ethers.getContractFactory('PegasysV2Staker')
+    const stakerFactory = await ethers.getContractFactory('PegasysV3Staker')
     const staker = (await stakerFactory.deploy(
       context.factory.address,
       context.nft.address,
       2 ** 32,
       2 ** 32
-    )) as PegasysV2Staker
+    )) as PegasysV3Staker
 
     expect(await staker.factory()).to.equal(context.factory.address)
     expect(await staker.nonfungiblePositionManager()).to.equal(context.nft.address)

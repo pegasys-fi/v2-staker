@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity =0.7.6;
 
-import '@pollum-io/v2-core/contracts/libraries/FullMath.sol';
+import '@pollum-io/v3-core/contracts/libraries/FullMath.sol';
 import '@openzeppelin/contracts/math/Math.sol';
 
 /// @title Math for computing rewards

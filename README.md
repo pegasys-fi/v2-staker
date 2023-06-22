@@ -1,6 +1,6 @@
-# pegasys-v2-staker
+# pegasys-v3-staker
 
-This is the canonical staking contract designed for [Pegasys V2](https://github.com/pegasys-fi/23-core).
+This is the canonical staking contract designed for [Pegasys V3](https://github.com/pegasys-fi/v3-core).
 
 ## Deployments
 

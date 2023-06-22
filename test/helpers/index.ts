@@ -17,8 +17,8 @@ import _ from 'lodash'
 import {
   TestERC20,
   INonfungiblePositionManager,
-  PegasysV2Staker,
-  IPegasysV2Pool,
+  PegasysV3Staker,
+  IPegasysV3Pool,
   TestIncentiveId,
 } from '../../typechain'
 import { HelperTypes } from './types'
@@ -38,10 +38,10 @@ import { TestContext } from '../types'
 export class HelperCommands {
   actors: ActorFixture
   provider: MockProvider
-  staker: PegasysV2Staker
+  staker: PegasysV3Staker
   nft: INonfungiblePositionManager
   router: ISwapRouter
-  pool: IPegasysV2Pool
+  pool: IPegasysV3Pool
   testIncentiveId: TestIncentiveId
 
   DEFAULT_INCENTIVE_DURATION = 2_000
@@ -59,10 +59,10 @@ export class HelperCommands {
     testIncentiveId,
   }: {
     provider: MockProvider
-    staker: PegasysV2Staker
+    staker: PegasysV3Staker
     nft: INonfungiblePositionManager
     router: ISwapRouter
-    pool: IPegasysV2Pool
+    pool: IPegasysV3Pool
     actors: ActorFixture
     testIncentiveId: TestIncentiveId
   }) {

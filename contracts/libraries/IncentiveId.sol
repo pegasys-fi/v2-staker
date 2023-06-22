@@ -2,13 +2,13 @@
 pragma solidity =0.7.6;
 pragma abicoder v2;
 
-import '../interfaces/IPegasysV2Staker.sol';
+import '../interfaces/IPegasysV3Staker.sol';
 
 library IncentiveId {
     /// @notice Calculate the key for a staking incentive
     /// @param key The components used to compute the incentive identifier
     /// @return incentiveId The identifier for the incentive
-    function compute(IPegasysV2Staker.IncentiveKey memory key) internal pure returns (bytes32 incentiveId) {
+    function compute(IPegasysV3Staker.IncentiveKey memory key) internal pure returns (bytes32 incentiveId) {
         return keccak256(abi.encode(key));
     }
 }

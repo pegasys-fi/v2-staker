@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: UNLICENSED
-// PEGASYS-v2-core/contracts/test/TestERC20.sol
+// PEGASYS-v3-core/contracts/test/TestERC20.sol
 pragma solidity =0.7.6;
 
-import '@pollum-io/v2-core/contracts/interfaces/IERC20Minimal.sol';
+import '@pollum-io/v3-core/contracts/interfaces/IERC20Minimal.sol';
 
 contract TestERC20 is IERC20Minimal {
     mapping(address => uint256) public override balanceOf;
