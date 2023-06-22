@@ -9,6 +9,9 @@
     "liquidity mining",
     "v3"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/pegasys-fi/v3-staker"
